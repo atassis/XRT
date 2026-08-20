@@ -849,7 +849,8 @@ get_formated_tiles_info(const xrt_core::device* device, aie_tile_type tile_type)
 
     pt = format_status(device, info, tile_type);
   }
-  catch (const std::exception&) {
+  catch (const std::exception& ex) {
+    pt.put("error_msg", ex.what());
     return pt;
   }
   return pt;

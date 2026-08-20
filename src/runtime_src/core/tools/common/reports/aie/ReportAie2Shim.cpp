@@ -44,7 +44,10 @@ writeReport(const xrt_core::device* /*dev*/,
   output << "AIE Shim Tiles\n";
 
   if (!pt.get_child_optional("aie_shim.columns")) {
-    output << "  No AIE columns are active on the device\n\n";
+    if (const auto err = pt.get_optional<std::string>("aie_shim.error_msg"))
+      output << "  Unable to read AIE shim status: " << *err << "\n\n";
+    else
+      output << "  No AIE columns are active on the device\n\n";
     return;
   }
 

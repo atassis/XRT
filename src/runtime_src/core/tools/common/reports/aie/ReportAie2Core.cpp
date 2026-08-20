@@ -44,7 +44,10 @@ writeReport(const xrt_core::device* /*dev*/,
   output << "AIE Core Tiles\n";
 
   if (!pt.get_child_optional("aie_core.columns")) {
-    output << "  No AIE columns are active on the device\n\n";
+    if (const auto err = pt.get_optional<std::string>("aie_core.error_msg"))
+      output << "  Unable to read AIE core status: " << *err << "\n\n";
+    else
+      output << "  No AIE columns are active on the device\n\n";
     return;
   }
 
